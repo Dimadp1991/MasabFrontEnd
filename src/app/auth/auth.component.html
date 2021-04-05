@@ -1,0 +1,17 @@
+<h3 id="header_login" > ברוכים הבאים </h3>
+
+<form id="login_page_form" [formGroup]="Login_Form" (ngSubmit)="Login_clicked()"  >
+
+     
+        <input class="form-control" type="text" formControlName="username" minlength="3"
+            placeholder="שם משתמש"> <br>
+            <div *ngIf="Login_Form.get('username').errors && this.submitted">
+                <p style="color: red;">שגיאה בשם משתמש</p>
+            </div>
+  
+        <input class="form-control" type="password" minlength="3" formControlName="password" placeholder="סיסמא"><br>
+        <div *ngIf="Login_Form.get('password').errors && this.submitted">
+            <p style="color: red;">שגיאה בסיסמא</p>
+        </div>
+        <button class="form-control" id="accept_btn" type="submit" class="btn btn-success btn">כניסה</button>
+</form>

@@ -1,0 +1,54 @@
+<div class="navigator">
+    <app-navigator (link_pressed)="selectedLink($event)"></app-navigator>
+</div>
+
+
+
+<div class="layout_" *ngIf="what_link_pressed==1">
+    <h5>ברוכים
+        הבאים למערכת מס"ב</h5>
+</div>
+
+<div class="layout_" *ngIf="what_link_pressed==2">
+    <perfect-scrollbar>
+        <app-standing-orders-list [standingOrders_list_list]="standingOs_main"
+            [institutions_list_list]="Institutions_list_main" [bankAccounts_list_list]="BankAccounts_list_main"
+            [customers_bills_list_list]="Customers_list_main" [customers_bills_list_list]="CustomerBills_list_main"
+            (updateView)="UpdateDataAfterUpdate()" (selectOrder)="selectedTheOrder($event)">
+        </app-standing-orders-list>
+
+    </perfect-scrollbar>
+
+    <app-standing-orders-details [standingOrder]="selectedOrder" [institutions_list]="Institutions_list_main"
+        [bankAccounts_list]="BankAccounts_list_main" [customers_list]="Customers_list_main"
+        [customers_bills_list]="CustomerBills_list_main" (updateView)="UpdateDataAfterUpdate()">
+    </app-standing-orders-details>
+
+</div>
+
+<div class="layout_" *ngIf="what_link_pressed==3">
+    <perfect-scrollbar>
+        <app-customers-list [Cuastomer_list_compo]="Customers_list_main" [Bank_acc_list_compo]="BankAccounts_list_main"
+            (selectCustomer)="selectedCustomer($event)" (updateView)="UpdateDataAfterUpdate()">
+        </app-customers-list>
+    </perfect-scrollbar>
+    <app-customers-details [customer]="selected_Customer" [bankAccounts]="BankAccounts_list_main"
+        (updateView)="UpdateDataAfterUpdate()"></app-customers-details>
+</div>
+
+<div class="layout_" *ngIf="what_link_pressed==4">
+    <perfect-scrollbar>
+        <app-institution-list [institution_list_compo]="Institutions_list_main"
+            (selectInstitution)="selectedInstitution($event)" (updateView)="UpdateDataAfterUpdate()">
+        </app-institution-list>
+    </perfect-scrollbar>
+    <app-institution-details [institution]="selected_institution" (updateView)="UpdateDataAfterUpdate()">
+    </app-institution-details>
+</div>
+
+<div class="layout_" *ngIf="what_link_pressed==5">
+    <app-customer-bills-details [standingOrders_in_bills]="standingOs_main"
+        [institutions_list_in_bills]="Institutions_list_main" [bankAccounts_list_in_bills]="BankAccounts_list_main"
+        [customers_list_in_bills]="Customers_list_main" [customers_bills_list_in_bills]="CustomerBills_list_main">
+    </app-customer-bills-details>
+</div>

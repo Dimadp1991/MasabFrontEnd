@@ -1,0 +1,186 @@
+<form class="form-group" id="update_standing_order_form" [formGroup]="ViewOrderForm" (ngSubmit)="UpdateSO_clicked()"
+    method="post">
+    <div id="update_form" *ngIf="standingOrder">
+        <div class="container center_div">
+            <div class="col-xs-2">
+                <label id="tag_lside_name"> תאריך יצירה
+                </label>
+
+                <input class="form-control" formControlName="date_created" type="text" bsDatepicker
+                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' , adaptivePosition: true,containerClass: 'theme-blue',displayOneMonthRange:true, showTodayButton: true }"
+                    [value]="my_formatdate(standingOrder.date_created)" disabled>
+
+                <label id="tag_lside_name"> תאריך חיוב</label>
+                <input class="form-control" formControlName="billing_date" type="text" bsDatepicker
+                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', adaptivePosition: true,containerClass: 'theme-blue',displayOneMonthRange: true,showTodayButton: true}"
+                    [value]="my_formatdate(standingOrder.billing_date)">
+                <label id="tag_lside_name"> תאריך התחלה</label>
+                <input class="form-control" formControlName="billing_start_period" type="text" bsDatepicker
+                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',containerClass: 'theme-blue', adaptivePosition: true,displayOneMonthRange: true,showTodayButton: true}"
+                    [value]="my_formatdate(standingOrder.billing_start_period) ">
+
+                <label id="tag_lside_name"> תאריך סיום</label>
+                <input class="form-control" formControlName="billing_end_period" type="text" bsDatepicker
+                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',containerClass: 'theme-blue', adaptivePosition: true,displayOneMonthRange: true,showTodayButton: true}"
+                    [value]="my_formatdate(standingOrder.billing_end_period) ">
+
+                <label id="tag_l_name">מטבע</label><br>
+                <input class="form-control" formControlName="currency" type="text" name="currency_select"
+                    [value]="standingOrder.currency" disabled>
+
+
+
+                <label id="tag_l_name">מוסד</label><br>
+                <input class="form-control" formControlName="institution" type="text"
+                    disabled>{{get_Object_by_id(institutions_list,standingOrder.institution).institution_name}} <br>
+
+                <button type="button" class="btn btn-dark"
+                    (click)="openModal('creat_new_Bill_modal')">חיובים</button><br>
+
+
+
+                <jw-modal id="creat_new_Bill_modal">
+                    <div class="container center_div">
+                        <div class="col-xs-3">
+
+                            <form class="form-group" id="create_bill" [formGroup]="Create_new_Bill_Form"
+                                (ngSubmit)="CreateBillForSO_clicked()">
+                                <ul *ngFor="let bill of standingOrder.customer_bill">
+
+                                    <li>
+                                        {{get_Object_by_id(customers_list,get_Object_by_id(customers_bills_list,bill)?.customer)?.first_name}}
+                                        {{get_Object_by_id(customers_list,get_Object_by_id(customers_bills_list,bill)?.customer)?.last_name}}
+                                        : {{ ((get_Object_by_id(customers_bills_list,bill)?.charged_amount))
+                                        |currency:'':''}}
+                                        <a id="new_delete_icon" class="material-icons" data-toggle="tooltip"
+                                            title="מחיקה" (click)="Set_Bill_to_delete(bill)"
+                                            (click)="openModal('delete_sure_form_details')"> delete</a>
+                                        <jw-modal id="delete_sure_form_details">
+                                            <h3 style="font-size: 20px;"> האם אתה בטח שאתה רוצה למחוק?</h3><br>
+                                            {{bill_to_delete}}
+                                            <button id="accept_btn" type="submit" class="btn btn-success"
+                                                (click)="DeleteBill_Clicked()">כן</button>
+                                            <button id="accept_btn" type="submit" class="btn btn-danger"
+                                                (click)="closeModal('delete_sure_form_details')">לא</button><br>
+                                        </jw-modal>
+                                    </li>
+
+                                </ul>
+                                <a id="new_customer_add" class="material-icons" data-toggle="tooltip" title="הוסף לקוח"
+                                    (click)="openModal('add_new_customer_from_so')"> person_add</a>
+                                <select id="customer_name_selector" class="form-control" formControlName="customer">
+
+                                    <option *ngFor="let customer of customers_list" [ngValue]="customer.id">
+
+                                        {{customer.id+'-'+customer.first_name+' '+customer.last_name}}</option>
+                                </select><br>
+
+                                <input class="form-control" type="number" maxlength="13"
+                                    formControlName="charged_amount" placeholder="סכום לחיוב"><br>
+                                <div *ngIf="Create_new_Bill_Form.get('charged_amount').errors && this.submitted">
+                                    <p style="color: red;"> שגיאה בסכום חיוב</p>
+                                </div>
+                                <button type="submit" class="btn btn-secondary">אישור</button><br>
+
+                            </form>
+                        </div>
+                    </div>
+                    <button class="btn btn-danger" (click)="closeModal('creat_new_Bill_modal')">סגור</button><br>
+                    <!--   {{Create_new_Bill_Form.value|json}} -->
+                </jw-modal>
+
+
+                <jw-modal id="add_new_customer_from_so">
+
+                    <form id="create_new_customer_form" class="form-group" [formGroup]="Create_Customer_Form"
+                        (ngSubmit)="CreateCustomer_clicked()">
+                        <div class="container center_div">
+                            <div class="col-xs-2">
+                                <label id="tag_lside_name">שם פרטי</label>
+                                <input class="form-control" type="text" maxlength="8" formControlName="first_name"
+                                    placeholder="שם פרטי">
+                                <br>
+                                <div *ngIf="Create_Customer_Form.get('first_name').errors && this.submitted">
+                                    <p style="color: red;"> שגיאה בשם פרטי</p>
+                                </div>
+                                <label id="tag_lside_name">שם משפחה</label>
+                                <input class="form-control" type="text" maxlength="8" formControlName="last_name"
+                                    placeholder="שם משפחה">
+                                <br>
+                                <div *ngIf="Create_Customer_Form.get('last_name').errors && this.submitted">
+                                    <p style="color: red;"> שגיאה בשם משפחה</p>
+                                </div>
+                                <label id="tag_lside_name"> מס' ת.ז</label>
+                                <input class="form-control" maxlength="9" type="text" formControlName="id_number"
+                                    placeholder="ת.ז"><br>
+                                <div *ngIf="Create_Customer_Form.get('id_number').errors && this.submitted">
+                                    <p style="color: red;"> שגיאה בת.ז </p>
+                                </div>
+                                <label id="lb1">הוסף חשבון בנק</label> <a id="new_so_icon" class="material-icons"
+                                    (click)="openModal('create_new_bank_acc_modal')"> create</a>
+                                <div *ngIf="BankAdded">
+                                    <button id="accept_btn" type="submit" class="btn btn-success btn">הכנס לקוח
+                                        למערכת</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+
+                    <jw-modal id="create_new_bank_acc_modal">
+                        <form id="Create_bank_acc_form" [formGroup]="Create_Bank_Acc_Form"
+                            (ngSubmit)="CreateBankInsideCustomer_clicked()">
+                            <div class="container center_div">
+                                <div class="col-xs-2">
+                                    <label id="tag_lside_name">מס' חשבון בנק</label>
+                                    <input class="form-control" maxlength="9" type="text"
+                                        formControlName="account_number" placeholder="מס' חשבון בנק">
+                                    <br>
+                                    <div *ngIf="Create_Bank_Acc_Form.get('account_number').errors && this.submitted">
+                                        <p style="color: red;"> שגיאה במס' חשבון בנק </p>
+                                    </div>
+                                    <label id="tag_lside_name">מספר סניף</label>
+                                    <input class="form-control" maxlength="3" type="text"
+                                        formControlName="branch_number" placeholder="מס' סניף"><br>
+                                    <div *ngIf="Create_Bank_Acc_Form.get('branch_number').errors && this.submitted">
+                                        <p style="color: red;"> שגיאה במס' סניף </p>
+                                    </div>
+                                    <label id="tag_lside_name"> סוג חשבון</label>
+                                    <input class="form-control" type="text" formControlName="account_type"><br>
+                                    <label id="tag_lside_name">קוד בנק</label>
+                                    <input class="form-control" maxlength="2" type="text" formControlName="bank_code"
+                                        placeholder="קוד בנק"><br>
+                                    <div *ngIf="Create_Bank_Acc_Form.get('bank_code').errors && this.submitted">
+                                        <p style="color: red;"> שגיאה בקוד בנק </p>
+                                    </div>
+                                    <button id="accept_btn" type="submit" class="btn btn-success btn">אישור</button>
+                                    <div *ngIf="Bank_Validetion_Check && this.submitted">
+                                        <p style="color: red;">פרטיי חשבון בנק שגויים(לא עמדו בבדיקות אימות חשבון)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <button class="btn btn-danger"
+                            (click)="closeModal('create_new_bank_acc_modal')">סגור</button><br>
+                    </jw-modal>
+                    <button class="btn btn-danger" (click)="closeModal('add_new_customer_from_so')">סגור</button><br>
+                </jw-modal>
+
+                <button type="submit" class="btn btn-success">עדכן הוראת קבע</button><br>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div *ngIf="standingOrder">
+    <div class="col-xs-6">
+        <form id="Create_Masab_file_div" [formGroup]="Create_MasabFile_form" (ngSubmit)="CreateMASABFileClicked()">
+            <input class="form-control" formControlName="masab_file_name" maxlength="30"
+                placeholder="שם קובץ מסב באנגלית"><br>
+            <div *ngIf="Create_MasabFile_form.get('masab_file_name').errors && this.submitted">
+                <p style="color: red;">הכנס שם קובץ באנגלית</p>
+            </div>
+            <button style="font-size: 30px;" class="btn btn-primary"> צור קובץ מס"ב </button><br>
+        </form>
+    </div>
+</div>

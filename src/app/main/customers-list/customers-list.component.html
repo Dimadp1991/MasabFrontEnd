@@ -1,0 +1,90 @@
+<label id="lb1">הוסף לקוח חדש</label><br> <a id="new_so_icon" class="material-icons"
+    (click)="openModal('create_new_customer_modal')" data-toggle="tooltip" title="הוסף לקוח חדש"> person_add</a>
+<jw-modal id="create_new_customer_modal">
+
+    <form id="create_new_customer_form" class="form-group" [formGroup]="Create_Customer_Form"
+        (ngSubmit)="CreateCustomer_clicked()">
+        <div class="container center_div">
+            <div class="col-xs-2">
+                <label id="tag_lside_name">שם פרטי</label><br>
+                <input class="form-control" type="text" maxlength="8" formControlName="first_name" placeholder="שם פרטי">
+                <div *ngIf="Create_Customer_Form.get('first_name').errors && this.submitted">
+                    <p style="color: red;"> שגיאה בשם פרטי</p>
+                </div>
+                <label id="tag_lside_name">שם משפחה</label><br>
+                <input class="form-control" maxlength="8" type="text" formControlName="last_name" placeholder="שם משפחה">
+                <div *ngIf="Create_Customer_Form.get('last_name').errors && this.submitted">
+                    <p style="color: red;"> שגיאה בשם משפחה</p>
+                </div>
+                <label id="tag_lside_name"> מס' ת.ז</label><br>
+                <input class="form-control" type="text" maxlength="9" formControlName="id_number" placeholder="ת.ז">
+                <div *ngIf="Create_Customer_Form.get('id_number').errors && this.submitted">
+                    <p style="color: red;"> שגיאה בת.ז </p>
+                </div>
+                <label id="lb1">הוסף חשבון בנק</label> <a id="new_so_icon" class="material-icons"
+                    (click)="openModal('create_new_bank_acc_modal')"> create</a>
+                <div *ngIf="BankAdded">
+                    <button id="accept_btn" type="submit" class="btn btn-success btn">הכנס לקוח למערכת</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+    <jw-modal id="create_new_bank_acc_modal">
+        <form id="Create_bank_acc_form" [formGroup]="Create_Bank_Acc_Form"
+            (ngSubmit)="CreateBankInsideCustomer_clicked()">
+            <div class="container center_div">
+                <div class="col-xs-2">
+                    <label id="tag_lside_name">מס' חשבון בנק</label>
+                    <input class="form-control" type="text" maxlength="9" formControlName="account_number"
+                        placeholder="מס' חשבון בנק"> <br>
+                    <div *ngIf="Create_Bank_Acc_Form.get('account_number').errors && this.submitted">
+                        <p style="color: red;"> שגיאה במס' חשבון בנק </p>
+                    </div>
+                    <label id="tag_lside_name">מספר סניף</label>
+                    <input class="form-control" type="text" maxlength="3" formControlName="branch_number" placeholder="מס' סניף"><br>
+                    <div *ngIf="Create_Bank_Acc_Form.get('branch_number').errors && this.submitted">
+                        <p style="color: red;"> שגיאה במס' סניף </p>
+                    </div>
+                    <label id="tag_lside_name"> סוג חשבון</label>
+                    <input class="form-control" type="text" formControlName="account_type"><br>
+                    <label id="tag_lside_name">קוד בנק</label>
+                    <input class="form-control" type="text" maxlength="2" formControlName="bank_code" placeholder="קוד בנק"><br>
+                    <div *ngIf="Create_Bank_Acc_Form.get('bank_code').errors && this.submitted">
+                        <p style="color: red;"> שגיאה בקוד בנק </p>
+                    </div>
+                    <button id="accept_btn" type="submit" class="btn btn-success btn">אישור</button>
+                    <div *ngIf="Bank_Validetion_Check && this.submitted">
+                        <p style="color: red;">פרטיי חשבון בנק שגויים(לא עמדו בבדיקות אימות חשבון)</p>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="container center_div">
+            <div class="col-xs-2">
+                <button class="btn btn-danger" (click)="closeModal('create_new_bank_acc_modal')">סגור</button><br>
+            </div>
+        </div>
+    </jw-modal>
+    <button class="btn btn-danger" (click)="closeModal('create_new_customer_modal')">סגור</button><br>
+</jw-modal>
+
+<div *ngFor="let customer of Cuastomer_list_compo" (click)="CustomerClicked(customer)">
+    <a id="new_delete_icon" class="material-icons" (click)="openModal('delete_sure_form')"
+        (click)="Set_to_delete(customer.id)" data-toggle="tooltip" title="מחיקה"> delete</a>
+
+    <jw-modal id="delete_sure_form">
+        <h3 style="font-size: 20px;"> האם אתה בטח שאתה רוצה למחוק?</h3><br>
+        {{customer_to_delete}}
+        <button id="accept_btn" type="submit" class="btn btn-success"
+            (click)="DeleteCustomer_clicked(customer_to_delete)" (click)="closeModal('delete_sure_form')">כן</button>
+        <button id="accept_btn" type="submit" class="btn btn-danger"
+            (click)="closeModal('delete_sure_form')">לא</button><br>
+    </jw-modal>
+
+
+    <button id="choose_btn_inst" class="btn btn-outline-success my-1 my-2 sm-2" type="submit"> {{customer.first_name +"
+        "+ customer.last_name }}</button>
+
+</div>

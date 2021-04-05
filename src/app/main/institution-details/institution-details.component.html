@@ -1,0 +1,26 @@
+<form class="form-group" id="update_bank_acc_form" [formGroup]="ViewInst_Acc_Form" (ngSubmit)="UpdateInst_clicked()"
+    method="post">
+
+    <div id="update_form" *ngIf="institution">
+        <div class="container center_div">
+            <div class="col-xs-2">
+                <label id="tag_lside_name">שם מוסד</label><br>
+                <input class="form-control" type="text" formControlName="institution_name"  maxlength="30">
+                <div *ngIf="ViewInst_Acc_Form.get('institution_name').errors && this.submitted">
+                    <p style="color: red;"> שגיאה בשם מוסד</p>
+                </div>
+                <label id="tag_lside_name">מס' מוסד</label><br>
+                <input class="form-control" type="text" formControlName="institution_id" maxlength="8" >
+                <div *ngIf="ViewInst_Acc_Form.get('institution_id').errors && this.submitted">
+                    <p style="color: red;"> שגיאה במס' מוסד</p>
+                </div>
+                <button id="accept_btn" type="submit" class="btn btn-success btn">עדכן מוסד</button><br>
+                <div *ngIf="updated_successfully">
+                    <p style="color: red;">!בוצע עדכון</p>
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+</form>

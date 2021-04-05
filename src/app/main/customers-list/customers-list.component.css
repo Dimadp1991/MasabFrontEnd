@@ -1,0 +1,57 @@
+#choose_btn_inst{
+    padding: 15px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    background: none;
+	color: inherit;
+	border: none;
+	cursor: pointer;
+	outline: inherit;
+}
+
+#create_new_customer_modal{animation:opac 0.8s}@keyframes opac{from{opacity:0} to{opacity:1}}
+
+
+
+
+#new_so_icon{
+    text-decoration: none;
+    color: rgb(13, 81, 158);
+    font-size: 40px;
+    cursor: pointer;
+    margin-left: 20px;
+
+}
+
+#new_so_icon:hover{
+    color: green;
+    transition: 0.8s;
+}
+
+#item_in_list{
+
+    display: inline-block;
+}
+
+#new_delete_icon{
+    text-decoration: none;
+
+margin-top: 10px;
+cursor: pointer;
+
+}
+
+#new_delete_icon:hover{
+    color: red;
+    transition: 0.8s;
+}
+
+#lb1{
+    font-size: 20px;
+    border-radius: 5px;
+    border-color: rgb(47, 16, 131);
+    background-color:  rgb(119, 182, 233);
+    color: rgb(255, 255, 255);
+    -webkit-text-stroke: 1px rgb(45, 43, 77);
+
+}

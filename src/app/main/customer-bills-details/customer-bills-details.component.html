@@ -1,0 +1,106 @@
+<div class="container">
+    <div class="row-xs-5">
+        <label id="lb1">חפש חיוב לפי</label><br>
+        <div class="form-check" id="check_boxes_div">
+            <div class="col-xs-2">
+                <input type="checkbox" style="width: 30px; height: 30px;" [checked]="filter_by_single_date"
+                    (change)="filter_by_single_date =!filter_by_range_date && !filter_by_single_date"
+                    class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                <label style="font-size: 20px;" class="form-check-label" for="flexCheckDefault">תאריך</label>
+            </div>
+            <div class="col-xs-2">
+                <input type="checkbox" style="width: 30px; height: 30px;" [checked]="filter_by_range_date"
+                    (change)="filter_by_range_date =!filter_by_single_date && !filter_by_range_date"
+                    class="form-check-input" type="checkbox" value="" id="flexCheckDefault_1" />
+                <label style="font-size: 20px;" class="form-check-label" for="flexCheckDefault_1">תקופה</label>
+            </div>
+            <div class="col-xs-2">
+                <input type="checkbox" style="width: 30px; height: 30px;" [checked]="filter_by_institution"
+                    (change)="filter_by_institution = !filter_by_institution" class="form-check-input" type="checkbox"
+                    value="" id="flexCheckDefault_1" />
+                <label style="font-size: 20px;" class="form-check-label" for="flexCheckDefault_1">מוסד</label>
+            </div>
+            <div class="col-xs-2">
+                <input type="checkbox" style="width: 30px; height: 30px;" [checked]="filter_by_customer"
+                    (change)="filter_by_customer = !filter_by_customer" class="form-check-input" type="checkbox"
+                    value="" id="flexCheckDefault_1" />
+                <label style="font-size: 20px;" class="form-check-label" for="flexCheckDefault_1">שם לקוח</label>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<form id="inputs_form_filter" [formGroup]="Bill_Filter_Form" (ngSubmit)="show_filtered_bills()">
+    <div *ngIf="filter_by_single_date">
+        <label style="font-size: 20px;" class="form-check-label">בחר תאריך</label><br>
+        <input class="form-control" type="text" bsDatepicker formControlName="filter_date"
+            [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',containerClass: 'theme-blue', adaptivePosition: true,displayOneMonthRange: true,showTodayButton: true}"><br>
+        <div *ngIf="Bill_Filter_Form.get('filter_date').errors && this.submitted && filter_by_single_date">
+            <p style="color: red;">שגיאה בתאריך</p>
+        </div>
+    </div>
+
+    <div *ngIf="filter_by_range_date">
+        <label style="font-size: 20px;" class="form-check-label">בחר תקופה</label><br>
+        <input class="form-control" type="text" bsDaterangepicker formControlName="filter_range_date"
+            [bsConfig]="{ rangeInputFormat: 'DD-MM-YYYY',containerClass: 'theme-blue', adaptivePosition: true,displayOneMonthRange: true,showTodayButton: true}"><br>
+        <div *ngIf="Bill_Filter_Form.get('filter_range_date').errors && this.submitted && filter_by_range_date">
+            <p style="color: red;">שגיאה בתחום תאריכים</p>
+        </div>
+    </div>
+
+
+    <div *ngIf="filter_by_institution">
+        <label style="font-size: 20px;" class="form-check-label">בחר מוסד</label><br>
+        <select class="form-control" formControlName="filter_inst">
+            <option *ngFor="let inst of institutions_list_in_bills" [ngValue]="inst">
+                {{inst.id+'-'+inst.institution_name}}</option>
+        </select><br>
+
+        <div *ngIf="Bill_Filter_Form.get('filter_inst').errors && this.submitted && filter_by_institution">
+            <p style="color: red;">שגיאה במוסד</p>
+        </div>
+
+    </div>
+
+    <div *ngIf="filter_by_customer">
+        <label style="font-size: 20px;" class="form-check-label">בחר לקוח</label><br>
+        <select id="customer_name_selector" class="form-control" formControlName="filter_customer">
+
+            <option *ngFor="let customer of customers_list_in_bills" [ngValue]="customer">
+
+                {{customer.id+'-'+customer.first_name+' '+customer.last_name}}</option>
+        </select><br>
+
+        <div *ngIf="Bill_Filter_Form.get('filter_customer').errors && this.submitted && filter_by_customer">
+            <p style="color: red;">שגיאה בלקוח</p>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-info" style="font-size: 20px; margin-right: 150px; margin-top: 50px;">חפש
+        חיובים</button>
+
+</form>
+
+
+<!-- {{Bill_Filter_Form.value|json}} -->
+<jw-modal id="Filtered_bills_Modal">
+    <perfect-scrollbar>
+        <div id="inside_bills_modal">
+            <tr *ngFor="let show_bill of bills_arr ">
+                <td>
+
+                    {{show_bill.customer_.first_name + ' '+ show_bill.customer_.last_name }}
+
+                    {{change_to_number(show_bill.bill_.charged_amount) |currency:'':''}}
+                    {{show_bill.inst_.institution_name}}
+
+                </td>
+            </tr>
+   
+        </div>
+    </perfect-scrollbar>
+    <button id="accept_btn" type="submit" class="btn btn-danger"
+    (click)="closeModal('Filtered_bills_Modal')">סגור</button><br>
+</jw-modal>

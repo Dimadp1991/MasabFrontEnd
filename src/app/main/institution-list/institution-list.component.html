@@ -1,0 +1,41 @@
+<label id="lb1">צור מוסד חדש</label><br> <a id="new_so_icon" data-toggle="tooltip" title="צור מוסד חדש"
+    class="material-icons" (click)="openModal('create_new_inst_form')"> add_business</a>
+<jw-modal id="create_new_inst_form">
+
+    <form class="form-group" id="update_bank_acc_form" [formGroup]="CreateInst_Form" (ngSubmit)="CreateInst_clicked()">
+        <div class="container center_div">
+            <div class="col-xs-2">
+                <!-- <label id="tag_lside_name">שם מוסד</label> -->
+                <input class="form-control" type="text" formControlName="institution_name" maxlength="30" placeholder="שם מוסד" ><br>
+                <div *ngIf="CreateInst_Form.get('institution_name').errors && this.submitted">
+                    <p style="color: red;"> שגיאה בשם מוסד</p>
+                </div>
+               <!--  <label id="tag_lside_name">מס' מוסד</label> -->
+                <input class="form-control" type="text" formControlName="institution_id" maxlength="8"  placeholder="מס' מוסד"><br>
+                <div *ngIf="CreateInst_Form.get('institution_id').errors && this.submitted">
+                    <p style="color: red;"> שגיאה במס' מוסד</p>
+                </div>
+                <button id="accept_btn" type="submit" class="btn btn-success btn">צור מוסד חדש</button><br>
+            </div>
+           
+        </div>
+    </form>
+    <button  class="btn btn-danger"  (click)="closeModal('create_new_inst_form')" >סגור</button><br>
+</jw-modal>
+<div *ngFor="let inst of institution_list_compo;index as i" (click)="InstitutionClicked(inst)">
+    <a id="new_delete_icon" class="material-icons" data-toggle="tooltip" title=" מחיקה "
+        (click)="openModal('delete_sure_form')" (click)="Set_to_delete(inst.id)"> delete</a>
+
+    <jw-modal id="delete_sure_form">
+        <h3 style="font-size: 20px;"> האם אתה בטח שאתה רוצה למחוק?</h3><br>
+        {{inst_to_delete}}
+        <button id="accept_btn" type="submit" class="btn btn-success" (click)="DeleteInst_clicked(inst_to_delete)"
+            (click)="closeModal('delete_sure_form')">כן</button>
+        <button id="accept_btn" type="submit" class="btn btn-danger"
+            (click)="closeModal('delete_sure_form')">לא</button><br>
+    </jw-modal>
+
+    <button id="choose_btn_inst" class="btn btn-outline-success my-1 my-2 sm-2" type="submit"> {{inst.institution_name
+        }}</button>
+
+</div>

@@ -1,0 +1,5 @@
+<div  *ngFor="let bank_ac of BankAcc_list_compo; index as i"  (click)="Banck_accClicked(bank_ac)">
+    <button id="btn_order_num" class="btn btn-outline-success my-1 my-2 sm-2" type="submit"> [{{i}}]  {{bank_ac.account_number }}</button>
+
+</div>
+

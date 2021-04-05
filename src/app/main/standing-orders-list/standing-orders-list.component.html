@@ -1,0 +1,103 @@
+
+<label id="lb1">צור הוראת קבע חדשה</label><br>
+<a id="new_so_icon" class="material-icons" (click)="openModal('create_standing_order_modal')" data-toggle="tooltip"
+    title="צור הוראת קבע חדשה"> library_add</a>
+<jw-modal id="create_standing_order_modal">
+    <form  class="form-group" id="create_standing_order_form" [formGroup]="Create_New_OrderForm"
+        (ngSubmit)="CreateNewSO_clicked()" method="post">
+        <div id="modal_object_list" class="container center_div">
+    
+         
+            <div class="col-lg-2" >
+                <label id="tag_lside_name"> תאריך יצירה
+                </label>
+
+                <input class="form-control" formControlName="date_created" type="text" bsDatepicker
+                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' , adaptivePosition: true,containerClass: 'theme-blue',displayOneMonthRange:true, showTodayButton: true }"
+                    disabled>
+
+                <label id="tag_lside_name"> תאריך חיוב</label>
+                <input class="form-control" formControlName="billing_date" type="text" placeholder="תאריך חיוב"  bsDatepicker
+                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY', adaptivePosition: true,containerClass: 'theme-blue',displayOneMonthRange: true,showTodayButton: true}">
+                <label id="tag_lside_name"> תאריך התחלה</label>
+                <input class="form-control" formControlName="billing_start_period" placeholder="תאריך תחילת חיוב" type="text" bsDatepicker
+                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',containerClass: 'theme-blue', adaptivePosition: true,displayOneMonthRange: true,showTodayButton: true}">
+
+                <label id="tag_lside_name"> תאריך סיום</label>
+                <input class="form-control" formControlName="billing_end_period" placeholder="תאריך  סיום חיוב" type="text" bsDatepicker
+                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY',containerClass: 'theme-blue', adaptivePosition: true,displayOneMonthRange: true,showTodayButton: true}">
+
+                <label id="tag_l_name">מטבע</label><br>
+                <select class="form-control" formControlName="currency"  name="currency_select">
+                    <option value="00"> שקל</option>
+                </select>
+                <a id="new_inst_icon_in_so" class="material-icons" (click)="openModal('create_new_inst_in_so')" data-toggle="tooltip"
+                title="צור מוסד חדש"> add_business</a>
+                <jw-modal id="create_new_inst_in_so">
+
+                    <form class="form-group" id="update_bank_acc_form" [formGroup]="CreateInst_Form" (ngSubmit)="CreateInst_clicked()">
+                        <div class="container center_div">
+                           
+                            <div class="col-xs-2">
+                                <!-- <label id="tag_lside_name">שם מוסד</label> -->
+                                <input class="form-control" type="text"  maxlength="30" formControlName="institution_name" placeholder="שם מוסד" ><br>
+                                <div *ngIf="CreateInst_Form.get('institution_name').errors && this.submitted">
+                                    <p style="color: red;"> שגיאה בשם מוסד</p>
+                                </div>
+                               <!--  <label id="tag_lside_name">מס' מוסד</label> -->
+                                <input class="form-control" type="text" formControlName="institution_id"  maxlength="8"  placeholder="מס' מוסד"><br>
+                                <div *ngIf="CreateInst_Form.get('institution_id').errors && this.submitted">
+                                    <p style="color: red;"> שגיאה במס' מוסד</p>
+                                </div>
+                                <button id="accept_btn" type="submit" class="btn btn-success btn">צור מוסד חדש</button><br>
+                            </div>
+                         
+                        </div>
+                    </form>
+                    <button  class="btn btn-danger"  (click)="closeModal('create_new_inst_in_so')" >סגור</button><br>
+                </jw-modal>
+                
+
+
+
+
+
+                <label id="tag_l_name">מוסד</label><br>
+                <select id="customer_name_selector" class="form-control" formControlName="institution">
+                    <option *ngFor="let inst of institutions_list_list" [ngValue]="inst.id">
+                        {{inst.id+'-'+inst.institution_name}}</option>
+                    </select><br>
+
+
+                    <button id="accept_btn" type="submit" class="btn btn-success btn"
+                    (click)="closeModal('create_standing_order_modal')">צור הראת קבע</button><br>
+                   
+            </div>
+        </div>
+
+    </form>
+    <button  class="btn btn-danger"  (click)="closeModal('create_standing_order_modal')" >סגור</button><br>
+</jw-modal>
+
+
+<div id="so_list_div" *ngFor="let so of standingOrders_list_list">
+    <a id="new_delete_icon" class="material-icons" data-toggle="tooltip" title="מחיקה" (click)="Set_to_delete(so.id)"
+       (click)="openModal('delete_sure_form')" > delete</a>
+
+    <jw-modal id="delete_sure_form">
+        <h3 style="font-size: 20px;"> האם אתה בטח שאתה רוצה למחוק?</h3><br>
+        {{order_to_delete}}
+        <button id="accept_btn" type="submit" class="btn btn-success" (click)="DeleteOrder_clicked(order_to_delete)"
+            (click)="closeModal('delete_sure_form')">כן</button>
+        <button id="accept_btn" type="submit" class="btn btn-danger"
+            (click)="closeModal('delete_sure_form')">לא</button><br>
+    </jw-modal>
+
+
+
+
+    <button id="btn_order_num" class="btn btn-outline-success my-1 my-2 sm-2" (click)="OrderClicked(so)" type="submit">
+        {{so.id}}</button>
+
+</div>
+

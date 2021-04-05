@@ -1,0 +1,14 @@
+<form id="update_bank_acc_form" [formGroup]="ViewBank_Acc_Form" (ngSubmit)="UpdateBA_clicked()" method="post">
+<div id="update_form" class="input-group input-group-sm mb-3" *ngIf="bank_acc">
+    <label id="tag_lside_name">מס' חשבון בנק</label>
+    <input  type="text" formControlName="account_number" [value]="bank_acc.account_number" > <br>
+    <label id="tag_lside_name">מספר סניף</label>
+    <input type="text" formControlName="branch_number" [value]="bank_acc.branch_number"><br>
+    <label id="tag_lside_name"> סוג חשבון</label>
+    <input type="text" formControlName="account_type" [value]="bank_acc.account_type"><br>
+    <label id="tag_lside_name">קוד בנק</label>
+    <input type="text" formControlName="bank_code" [value]="bank_acc.bank_code"><br>
+    <button id="accept_btn" type="submit" class="btn btn-success btn">עדכן חשבון בנק</button><br>
+    
+</div>
+</form>

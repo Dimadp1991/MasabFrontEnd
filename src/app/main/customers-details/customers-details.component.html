@@ -1,0 +1,74 @@
+<div id="update_form" *ngIf="customer">
+    <form class="form-group" id="update_bank_acc_form" [formGroup]="ViewCustomer_Form"
+        (ngSubmit)="UpdateCustomer_clicked()" method="post">
+        <div class="container center_div">
+            <div class="col-xs-2">
+                <label id="tag_lside_name">שם פרטי</label><br>
+                <input class="form-control" type="text" maxlength="8" formControlName="first_name">
+                <div *ngIf="ViewCustomer_Form.get('first_name').errors && this.submitted">
+                    <p style="color: red;"> שגיאה בשם פרטי</p>
+                </div>
+                <label id="tag_lside_name">שם משפחה</label><br>
+                <input class="form-control" type="text" maxlength="8" formControlName="last_name">
+                <div *ngIf="ViewCustomer_Form.get('last_name').errors && this.submitted">
+                    <p style="color: red;"> שגיאה בשם משפחה</p>
+                </div>
+                <label id="tag_lside_name"> מס' ת.ז</label><br>
+                <input class="form-control" type="text" maxlength="9" formControlName="id_number">
+                <div *ngIf="ViewCustomer_Form.get('id_number').errors && this.submitted">
+                    <p style="color: red;"> שגיאה בת.ז </p>
+                </div>
+                <label id="tag_lside_name">חשבון בנק</label><br>
+                <input class="form-control" type="text" formControlName="bank_account" disabled>
+
+                <button id="accept_btn" type="submit" class="btn btn-success btn">עדכן פרטי לקוח</button>
+
+            </div>
+        </div>
+    </form>
+    <div class="container center_div">
+        <div class="col-xs-2">
+            <button id="bank_update_btn" class="btn btn-dark" (click)="show_update_banck_acc_data()">עדכן פרטי
+                חשבון</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div id="update_form" *ngIf="Update_bank_acc">
+    <form class="form-group" id="update_bank_acc_form" [formGroup]="ViewBank_Acc_Form"
+        (ngSubmit)="UpdateBankInsideCustomer_clicked()">
+        <div class="container center_div">
+            <div class="col-xs-2">
+                <label id="tag_lside_name">מס' חשבון בנק</label>
+                <input class="form-control" type="text" maxlength="9" formControlName="account_number"> <br>
+                <div *ngIf="ViewBank_Acc_Form.get('account_number').errors && this.submitted">
+                    <p style="color: red;"> שגיאה במס' חשבון בנק </p>
+                </div>
+                <label id="tag_lside_name">מספר סניף</label>
+                <input class="form-control" type="text" maxlength="3" formControlName="branch_number"><br>
+                <div *ngIf="ViewBank_Acc_Form.get('branch_number').errors && this.submitted">
+                    <p style="color: red;"> שגיאה במס' סניף </p>
+                </div>
+                <label id="tag_lside_name"> סוג חשבון</label>
+                <input class="form-control" type="text" maxlength="4" formControlName="account_type"><br>
+                <label id="tag_lside_name">קוד בנק</label>
+                <input class="form-control" type="text" maxlength="2" formControlName="bank_code"><br>
+                <div *ngIf="ViewBank_Acc_Form.get('bank_code').errors && this.submitted">
+                    <p style="color: red;"> שגיאה בקוד בנק </p>
+                </div>
+                <div *ngIf="Bank_Validetion_Check && this.submitted">
+                    <p style="color: red;">פרטיי חשבון בנק שגויים(לא עמדו בבדיקות אימות חשבון)</p>
+                </div>
+                <button id="accept_btn" type="submit" class="btn btn-success btn">עדכן פרטי חשבון</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+<div *ngIf="updated_successfully">
+    <p style="color: red;">עדכון חשבון בוצע בהצלחה</p>
+</div>
