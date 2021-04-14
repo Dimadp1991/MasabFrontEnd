@@ -88,19 +88,46 @@
 <jw-modal id="Filtered_bills_Modal">
     <perfect-scrollbar>
         <div id="inside_bills_modal">
-            <tr *ngFor="let show_bill of bills_arr ">
-                <td>
+            <tr>
+
+                <td *ngFor="let show_bill of bills_arr ">
 
                     {{show_bill.customer_.first_name + ' '+ show_bill.customer_.last_name }}
 
+                    <!--   {{change_to_number(show_bill.bill_.charged_amount) |currency:'':''}}
+                    {{show_bill.inst_.institution_name}} -->
+
+                </td>
+                <td id="table_header">
+                    שם לקוח
+                </td>
+            </tr>
+
+            <tr>
+
+                <td *ngFor="let show_bill of bills_arr ">
                     {{change_to_number(show_bill.bill_.charged_amount) |currency:'':''}}
+             
+                </td>
+                <td id="table_header">
+                   סכום לחיוב
+                </td>
+            </tr>
+
+            <tr>
+
+                <td *ngFor="let show_bill of bills_arr ">
                     {{show_bill.inst_.institution_name}}
 
                 </td>
+                <td id="table_header">
+                שם מוסד
+                </td>
             </tr>
-   
+
+
         </div>
     </perfect-scrollbar>
     <button id="accept_btn" type="submit" class="btn btn-danger"
-    (click)="closeModal('Filtered_bills_Modal')">סגור</button><br>
+        (click)="closeModal('Filtered_bills_Modal')">סגור</button><br>
 </jw-modal>

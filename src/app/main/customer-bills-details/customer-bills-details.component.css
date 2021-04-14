@@ -15,6 +15,10 @@
     border: double black;
 }
 
+#table_header{
+    font-weight: bold;
+    font-size: 25px;
+}
 
 #Filtered_bills_Modal  perfect-scrollbar{
     height: 300px;
