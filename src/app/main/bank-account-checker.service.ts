@@ -9,7 +9,7 @@ enum Sample {
   providedIn: 'root'
 })
 
-
+  
 
 export class BankAccountCheckerService {
 
